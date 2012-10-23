@@ -1,6 +1,18 @@
-# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
-bin
-obj
-
-# mstest test results
-TestResults
+[Dd]ebug/
+[Rr]elease/
+build/
+[Bb]in/
+[Oo]bj/
+*.suo
+*.sln.cache
+*.[Rr]e[Ss]harper*
+*_[Rr]e[Ss]harper*
+*.user
+StyleCop.Cache
+*.dotCover
+*.sln.cache
+*.crunchsolution.*
+*.crunchproject.*
+*.ncrunchsolution
+*.ncrunchproject
+Settings.StyleCop
