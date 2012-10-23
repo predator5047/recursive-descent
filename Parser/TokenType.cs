@@ -14,5 +14,8 @@
         VALUE,
         SEMI,
         FUNC,
+
+        // Internal tokens
+        NEW_RULE,
     }
 }

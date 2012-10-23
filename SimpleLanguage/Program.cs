@@ -13,7 +13,7 @@ namespace SimpleLanguage
             parser.Parse("");
 
             var err = parser.Errors;
-            var ast = parser.AbstractSyntaxTree;
+            var ast = parser.SyntaxTree;
             
             // Find children
             Node<string> node;

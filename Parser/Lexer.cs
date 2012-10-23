@@ -21,7 +21,7 @@ namespace Parser
             q.Enqueue(new Token { TokenType = TokenType.LPAR, Value = "("});
             q.Enqueue(new Token { TokenType = TokenType.VALUE, Value = "\"Hello world!\""});
             q.Enqueue(new Token { TokenType = TokenType.RPAR, Value = ")"});
-            q.Enqueue(new Token { TokenType = TokenType.SEMI, Value = ";"});
+            q.Enqueue(new Token { TokenType = TokenType.SEMI, Value = ";" });
             q.Enqueue(new Token { TokenType = TokenType.RBRA, Value = "}" });
 
             return q;
