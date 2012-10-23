@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Error.cs" />
     <Compile Include="ErrorType.cs" />
+    <Compile Include="FakeLexer.cs" />
     <Compile Include="ILexer.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="Node.cs" />

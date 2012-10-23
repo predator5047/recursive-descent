@@ -42,24 +42,11 @@ namespace Parser
             m_consumed.Clear();
             m_sym = m_lexer.Tokenize(input);
 
-            // Should be stmt (top symbol) later on
+            // Stmt == Terminating rule
             Stmt();
-            //Expr()
 
             if (m_sym.Count > 0)
                 m_err.Enqueue(new Error { Message = "Syntax Error - Unmatched tokens", Type = ErrorType.SyntaxError });
-
-            // Temp - This should be done outside of this class
-            if (m_err.Count > 0)
-            {
-                Console.WriteLine("Error List:");
-                Console.WriteLine("-----------");
-
-                foreach (var error in m_err)
-                {
-                    Console.WriteLine(error);
-                }
-            }
         }
 
         /// <summary>
