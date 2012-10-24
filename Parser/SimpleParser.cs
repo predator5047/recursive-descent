@@ -159,6 +159,10 @@ namespace Parser
             // Pop the "new rule" token
             if (m_consumed.Count > 0)
                 m_consumed.Pop();
+
+            // TODO: EXPERIMENTAL
+            // Reset the AST node to NOT include anything rolled back
+            m_tree.Children.Clear();
         }
 
         private SimpleParser RuleStartsWith(TokenType type)
