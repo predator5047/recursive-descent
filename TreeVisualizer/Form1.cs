@@ -61,7 +61,7 @@ namespace TreeVisualizer
             Tokens.Add(new Token { TokenType = TokenType.LBRA, Value = "{" });
             Tokens.Add(new Token { TokenType = TokenType.NAME, Value = "Print" });
             Tokens.Add(new Token { TokenType = TokenType.LPAR, Value = "(" });
-            Tokens.Add(new Token { TokenType = TokenType.VALUE, Value = "\"Hello world!\"" });
+            Tokens.Add(new Token { TokenType = TokenType.VALUE, Value = "\"Blaha!\"" });
             Tokens.Add(new Token { TokenType = TokenType.RPAR, Value = ")" });
             Tokens.Add(new Token { TokenType = TokenType.SEMI, Value = ";" });
             Tokens.Add(new Token { TokenType = TokenType.RBRA, Value = "}" });
