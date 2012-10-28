@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Parser
 {
@@ -13,6 +14,9 @@ namespace Parser
         private Node<string> m_tree;
         private bool m_triedRollback;
 
+        private Func<string, Node<string>> m_rulePreHook;
+        private Action<Node<string>>  m_rulePostHook;
+
         public SimpleParser(ILexer lexer)
         {
             m_startRuleToken = new Token { TokenType = TokenType.NEW_RULE };
@@ -20,6 +24,24 @@ namespace Parser
             m_lexer = lexer;
             m_consumed = new Stack<Token>();
             m_err = new Queue<Error>();
+
+            // Setup rule pre-calling conditions
+            m_rulePreHook = (name) =>
+                                {
+                                    if (m_tree.Value == null)
+                                    {
+                                        m_tree.Value = name;
+                                        return m_tree;
+                                    }
+                                    
+                                    var tempNode = m_tree;
+                                    var newTopNode = m_tree.AddChild(name);
+                                    m_tree = newTopNode;
+                                    return tempNode;
+                                };
+
+            // Setup rule post-calling conditions
+            m_rulePostHook = node => m_tree = node;
         }
 
         public Node<string> SyntaxTree
@@ -45,8 +67,13 @@ namespace Parser
             // Stmt == Terminating rule
             Stmt();
 
+            // If we still have symbols in the stream, parsing failed
             if (m_sym.Count > 0)
                 m_err.Enqueue(new Error { Message = "Syntax Error - Unmatched tokens", Type = ErrorType.SyntaxError });
+
+            // If parsing failed, reset the tree
+            if (m_err.Count > 0)
+                m_tree = null;
         }
 
         /// <summary>
@@ -100,44 +127,46 @@ namespace Parser
 
         public void Stmt()
         {
+            var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
+
             if (RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).NoFailureReported())
             {
-                // Add to AST
-                AddTopNode("Stmt");
             }
             else if (RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).NoFailureReported())
             {
-                // Add to AST
-                AddTopNode("Stmt");
             }
             else if (RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).NoFailureReported())
             {
-                // Add to AST
-                AddTopNode("Stmt");
             }
             else
             {
                 m_err.Enqueue(new Error { Message = "Syntax Error - Invalid Statement", Type = ErrorType.SyntaxError });
             }
+
+            m_rulePostHook(tempNode);
         }
 
         public void Expr()
         {
+            var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
+
             // FUNC LPAR VALUE RPAR SEMI
             if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).NoFailureReported())
             {
                 // Add to AST
-                AddTopNode("Expr");
+                //AddTopNode("Expr");
             }
             else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).NoFailureReported())
             {
                 // Add to AST
-                AddTopNode("Expr");
+                //AddTopNode("Expr");
             }
             else
             {
                 m_err.Enqueue(new Error { Message = "Syntax Error - Invalid Expression", Type = ErrorType.SyntaxError});
             }
+
+            m_rulePostHook(tempNode);
         }
 
         private bool NoFailureReported()
