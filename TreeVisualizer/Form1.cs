@@ -13,6 +13,7 @@ namespace TreeVisualizer
     public partial class Form1 : Form
     {
         public List<Token> Tokens { get; set; }
+        ILexer lexer = new FakeLexer();
 
         public Form1()
         {
@@ -102,17 +103,27 @@ namespace TreeVisualizer
 
         private void CallParse()
         {
-            var lexer = new FakeLexer();
-            lexer.LexerOutput = Tokens;
+            ((FakeLexer)lexer).LexerOutput = Tokens;
 
             var parser = new SimpleParser(lexer);
 
-            parser.Parse("");
+            parser.Parse(txtInput.Text);
 
             SetOutput(parser.Errors);
 
             if (parser.Errors.Count == 0)
                 RenderTree(parser.SyntaxTree);
+        }
+
+        private void CallTokenize()
+        {
+            var tempLexer = new Lexer();
+            var tokens = tempLexer.Tokenize(txtInput.Text);
+
+            foreach (var token in tokens)
+            {
+                Tokens.Add(token);
+            }
         }
 
         private void RenderTree(Node<string> tree)
@@ -160,6 +171,11 @@ namespace TreeVisualizer
             if (keyData == Keys.F5)
             {
                 CallParse();
+            }
+
+            if (keyData == Keys.F7)
+            {
+                CallTokenize();
             }
 
             return base.ProcessCmdKey(ref msg, keyData);
