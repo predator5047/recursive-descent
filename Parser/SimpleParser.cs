@@ -26,7 +26,7 @@ namespace Parser
             m_err = new Queue<Error>();
 
             // Setup rule pre-calling conditions
-            m_rulePreHook = (name) =>
+            m_rulePreHook = name =>
                                 {
                                     if (m_tree.Value == null)
                                     {
@@ -65,7 +65,8 @@ namespace Parser
             m_sym = m_lexer.Tokenize(input);
 
             // Stmt == Terminating rule
-            Stmt();
+            //Stmt();
+            Prg();
 
             // If we still have symbols in the stream, parsing failed
             if (m_sym.Count > 0)
@@ -125,17 +126,29 @@ namespace Parser
 
         /* GRAMMAR IMPLEMENTATION */
 
+        public void Prg()
+        {
+            var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
+
+            while (m_sym.Count > 0 && m_err.Count == 0)
+            {
+                Stmt();
+            }
+
+            m_rulePostHook(tempNode);
+        }
+
         public void Stmt()
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            if (RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).NoFailureReported())
+            if (RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched())
             {
             }
-            else if (RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).NoFailureReported())
+            else if (RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).AndWasMatched())
             {
             }
-            else if (RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).NoFailureReported())
+            else if (RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched())
             {
             }
             else
@@ -151,12 +164,17 @@ namespace Parser
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
             // FUNC LPAR VALUE RPAR SEMI
-            if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).NoFailureReported())
+            if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).AndWasMatched())
             {
                 // Add to AST
                 //AddTopNode("Expr");
             }
-            else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).NoFailureReported())
+            else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.RPAR).AndWasMatched())
+            {
+                // Add to AST
+                //AddTopNode("Expr");
+            }
+            else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched())
             {
                 // Add to AST
                 //AddTopNode("Expr");
@@ -169,7 +187,7 @@ namespace Parser
             m_rulePostHook(tempNode);
         }
 
-        private bool NoFailureReported()
+        private bool AndWasMatched()
         {
             var status = (m_err.Count == 0 && !m_triedRollback);
             m_triedRollback = false;

@@ -46,6 +46,8 @@
     <Compile Include="FakeLexer.cs" />
     <Compile Include="ILexer.cs" />
     <Compile Include="Lexer.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="LexerExtensions.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="PQueue.cs" />
     <Compile Include="SimpleParser.cs" />
