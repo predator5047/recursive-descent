@@ -13,7 +13,7 @@ namespace TreeVisualizer
     public partial class Form1 : Form
     {
         public List<Token> Tokens { get; set; }
-        ILexer lexer = new FakeLexer();
+        ILexer lexer = new Lexer();
 
         public Form1()
         {
@@ -103,10 +103,9 @@ namespace TreeVisualizer
 
         private void CallParse()
         {
-            ((FakeLexer)lexer).LexerOutput = Tokens;
-
+            CallTokenize();
             var parser = new SimpleParser(lexer);
-
+            
             parser.Parse(txtInput.Text);
 
             SetOutput(parser.Errors);
@@ -117,12 +116,25 @@ namespace TreeVisualizer
 
         private void CallTokenize()
         {
-            var tempLexer = new Lexer();
-            var tokens = tempLexer.Tokenize(txtInput.Text);
+            Tokens.Clear();
 
-            foreach (var token in tokens)
+            try
             {
-                Tokens.Add(token);
+                var tokens = lexer.Tokenize(txtInput.Text);
+                
+                foreach (var token in tokens)
+                {
+                    Tokens.Add(token);
+                }
+
+                txtOutput.ForeColor = Color.DarkGreen;
+                txtOutput.Text = "Lexical analysis passed";
+                UpdateTokenList();
+            }
+            catch (LexerException exception)
+            {
+                txtOutput.ForeColor = Color.DarkRed;
+                txtOutput.Text = exception.Message;
             }
         }
 
@@ -184,6 +196,11 @@ namespace TreeVisualizer
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnTokenize_Click(object sender, EventArgs e)
+        {
+            CallTokenize();
         }
     }
 }

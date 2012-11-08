@@ -99,6 +99,7 @@
             // syntaxTreeView
             // 
             this.syntaxTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.syntaxTreeView.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.syntaxTreeView.Location = new System.Drawing.Point(0, 0);
             this.syntaxTreeView.Name = "syntaxTreeView";
             this.syntaxTreeView.Size = new System.Drawing.Size(315, 443);
@@ -142,6 +143,7 @@
             // tokenList
             // 
             this.tokenList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tokenList.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tokenList.FormattingEnabled = true;
             this.tokenList.Location = new System.Drawing.Point(0, 0);
             this.tokenList.MultiColumn = true;
@@ -151,6 +153,8 @@
             // 
             // txtInput
             // 
+            this.txtInput.AcceptsReturn = true;
+            this.txtInput.AcceptsTab = true;
             this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtInput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInput.Location = new System.Drawing.Point(0, 0);
@@ -380,6 +384,7 @@
             this.btnTokenize.Name = "btnTokenize";
             this.btnTokenize.Size = new System.Drawing.Size(23, 22);
             this.btnTokenize.Text = "Generate tokens without parsing (F7)";
+            this.btnTokenize.Click += new System.EventHandler(this.btnTokenize_Click);
             // 
             // toolStripButton1
             // 
