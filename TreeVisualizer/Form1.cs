@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Parser;
+using SimpleCompiler;
 
 namespace TreeVisualizer
 {
@@ -101,17 +102,22 @@ namespace TreeVisualizer
             CallParse();
         }
 
-        private void CallParse()
+        private Node<string> CallParse()
         {
             CallTokenize();
             var parser = new SimpleParser(lexer);
-            
-            parser.Parse(txtInput.Text);
 
-            SetOutput(parser.Errors);
-
-            if (parser.Errors.Count == 0)
+            try
+            {
+                parser.Parse(txtInput.Text);
                 RenderTree(parser.SyntaxTree);
+                return parser.SyntaxTree;
+            }
+            catch (ParserException ex)
+            {
+                txtOutput.Text += ex.Message + '\r' + '\n';
+                return null;
+            }
         }
 
         private void CallTokenize()
@@ -202,6 +208,11 @@ namespace TreeVisualizer
                 CallTokenize();
             }
 
+            if (keyData == Keys.F6)
+            {
+                CallCompile();
+            }
+
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -213,6 +224,28 @@ namespace TreeVisualizer
         private void btnTokenize_Click(object sender, EventArgs e)
         {
             CallTokenize();
+        }
+
+        private void txtInput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCompile_Click(object sender, EventArgs e)
+        {
+            CallCompile();
+        }
+
+        private void CallCompile()
+        {
+            txtOutput.Text += "Building..." +'\r' + '\n';
+            var tree = CallParse();
+
+            if (tree == null)
+                return;
+
+            var compiler = new Compiler();
+            compiler.Compile(tree);
         }
     }
 }

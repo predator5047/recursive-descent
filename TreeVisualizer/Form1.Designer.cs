@@ -60,6 +60,7 @@
             this.btnParse = new System.Windows.Forms.ToolStripButton();
             this.btnTokenize = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.btnCompile = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -162,6 +163,7 @@
             this.txtInput.Name = "txtInput";
             this.txtInput.Size = new System.Drawing.Size(442, 307);
             this.txtInput.TabIndex = 0;
+            this.txtInput.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
             // 
             // txtOutput
             // 
@@ -247,10 +249,11 @@
             this.btnAddToken,
             this.toolStripSeparator3,
             this.btnParse,
-            this.btnTokenize});
+            this.btnTokenize,
+            this.btnCompile});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(505, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(559, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // newToolStripButton
@@ -395,6 +398,16 @@
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
+            // btnCompile
+            // 
+            this.btnCompile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCompile.Image = ((System.Drawing.Image)(resources.GetObject("btnCompile.Image")));
+            this.btnCompile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCompile.Name = "btnCompile";
+            this.btnCompile.Size = new System.Drawing.Size(23, 22);
+            this.btnCompile.Text = "Compile (F6)";
+            this.btnCompile.Click += new System.EventHandler(this.btnCompile_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -468,6 +481,7 @@
         private System.Windows.Forms.SplitContainer splitContainer3;
         private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.ToolStripButton btnTokenize;
+        private System.Windows.Forms.ToolStripButton btnCompile;
     }
 }
 
