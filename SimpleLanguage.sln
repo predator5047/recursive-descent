@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParserTests", "ParserTests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeVisualizer", "TreeVisualizer\TreeVisualizer.csproj", "{DF109854-1431-43AA-9192-D34276A77B0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCompiler", "SimpleCompiler\SimpleCompiler.csproj", "{00BEE6C6-97FA-4436-8018-9726E7130391}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +61,16 @@ Global
 		{DF109854-1431-43AA-9192-D34276A77B0C}.Release|Mixed Platforms.Build.0 = Release|x86
 		{DF109854-1431-43AA-9192-D34276A77B0C}.Release|x86.ActiveCfg = Release|x86
 		{DF109854-1431-43AA-9192-D34276A77B0C}.Release|x86.Build.0 = Release|x86
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
