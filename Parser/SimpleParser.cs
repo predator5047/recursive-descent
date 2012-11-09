@@ -152,11 +152,15 @@ namespace Parser
 
         public void Stmt()
         {
+            // Removed/Refactored grammar:
+            //RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).AndWasMatched() ||
+
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
             if (!(
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
                 RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched() || 
-                RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).AndWasMatched() ||
+                RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
                 RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched()))
             {
                 throw new ParserException("Parsing failed (Stmt)");
@@ -170,9 +174,15 @@ namespace Parser
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
             if (!(
+                //RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.OPER).FollowedBy(TokenType.NAME).AndWasMatched() ||
                 RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).AndWasMatched() ||
                 RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.RPAR).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched()))
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched() ||
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.OPER).FollowedBy(Expr).AndWasMatched() ||
+                RuleStartsWith(TokenType.VALUE).FollowedBy(TokenType.OPER).FollowedBy(Expr).AndWasMatched() ||
+                RuleStartsWith(TokenType.VALUE).AndWasMatched() ||
+                RuleStartsWith(TokenType.NAME).AndWasMatched()
+                ))
             {
                 throw new ParserException("Parsing failed (Expr)");
             }
