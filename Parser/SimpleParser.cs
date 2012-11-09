@@ -130,10 +130,14 @@ namespace Parser
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            while (m_sym.Count > 0 && m_err.Count == 0)
+            while (RuleStartsWith(Stmt).AndWasMatched())
+            {
+            }
+
+            /*while (m_sym.Count > 0 && m_err.Count == 0)
             {
                 Stmt();
-            }
+            }*/
 
             m_rulePostHook(tempNode);
         }
