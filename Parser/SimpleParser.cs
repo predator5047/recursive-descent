@@ -62,7 +62,15 @@ namespace Parser
         {
             m_err.Clear();
             m_consumed.Clear();
-            m_sym = m_lexer.Tokenize(input);
+
+            try
+            {
+                m_sym = m_lexer.Tokenize(input);
+            }
+            catch (LexerException ex)
+            {
+                throw new ParserException("Parsing failed", ex);
+            }
 
             // Stmt == Terminating rule
             //Stmt();
@@ -130,14 +138,14 @@ namespace Parser
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            while (RuleStartsWith(Stmt).AndWasMatched())
+            /*while (RuleStartsWith(Stmt).AndWasMatched())
             {
-            }
+            }*/
 
-            /*while (m_sym.Count > 0 && m_err.Count == 0)
+            while (m_sym.Count > 0 && m_err.Count == 0)
             {
                 Stmt();
-            }*/
+            }
 
             m_rulePostHook(tempNode);
         }
@@ -146,18 +154,12 @@ namespace Parser
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            if (RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched())
+            if (!(
+                RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched() || 
+                RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).AndWasMatched() ||
+                RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched()))
             {
-            }
-            else if (RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.SEMI).AndWasMatched())
-            {
-            }
-            else if (RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched())
-            {
-            }
-            else
-            {
-                m_err.Enqueue(new Error { Message = "Syntax Error - Invalid Statement", Type = ErrorType.SyntaxError });
+                throw new ParserException("Parsing failed (Stmt)");
             }
 
             m_rulePostHook(tempNode);
@@ -167,25 +169,12 @@ namespace Parser
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            // FUNC LPAR VALUE RPAR SEMI
-            if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).AndWasMatched())
+            if (!(
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).AndWasMatched() ||
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.RPAR).AndWasMatched() ||
+                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched()))
             {
-                // Add to AST
-                //AddTopNode("Expr");
-            }
-            else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.RPAR).AndWasMatched())
-            {
-                // Add to AST
-                //AddTopNode("Expr");
-            }
-            else if (RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched())
-            {
-                // Add to AST
-                //AddTopNode("Expr");
-            }
-            else
-            {
-                m_err.Enqueue(new Error { Message = "Syntax Error - Invalid Expression", Type = ErrorType.SyntaxError});
+                throw new ParserException("Parsing failed (Expr)");
             }
 
             m_rulePostHook(tempNode);
@@ -211,7 +200,6 @@ namespace Parser
             if (m_consumed.Count > 0)
                 m_consumed.Pop();
 
-            // TODO: EXPERIMENTAL
             // Reset the AST node to NOT include anything rolled back
             m_tree.Children.Clear();
         }
