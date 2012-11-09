@@ -108,6 +108,10 @@
       <Project>{95848315-A00F-45FF-8BC6-CE9CDADCB8BD}</Project>
       <Name>Parser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimpleCompiler\SimpleCompiler.csproj">
+      <Project>{00BEE6C6-97FA-4436-8018-9726E7130391}</Project>
+      <Name>SimpleCompiler</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
