@@ -12,6 +12,7 @@ namespace Parser
 
         private Dictionary<TokenType, string> lexerRules = new Dictionary<TokenType, string>
             {
+                { TokenType.OPER, @"\+|\-|\*|\/" },
                 { TokenType.IF, "if" },
                 { TokenType.LPAR, "[(]" },
                 { TokenType.RPAR, "[)]" },
