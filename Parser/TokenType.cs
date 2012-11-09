@@ -13,6 +13,7 @@
         ASSIGN,
         VALUE,
         SEMI,
+        OPER,
 
         // Internal tokens
         NEW_RULE,
