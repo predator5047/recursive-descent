@@ -128,13 +128,13 @@ namespace TreeVisualizer
                 }
 
                 txtOutput.ForeColor = Color.DarkGreen;
-                txtOutput.Text = "Lexical analysis passed";
+                txtOutput.Text += "Lexical analysis passed" + '\r' + '\n';
                 UpdateTokenList();
             }
             catch (LexerException exception)
             {
                 txtOutput.ForeColor = Color.DarkRed;
-                txtOutput.Text = exception.Message;
+                txtOutput.Text += exception.Message + '\r' + '\n';
             }
         }
 
@@ -161,7 +161,7 @@ namespace TreeVisualizer
 
         private void SetOutput(Queue<Error> errors)
         {
-            txtOutput.Text = string.Empty;
+            //txtOutput.Text = string.Empty;
 
             if (errors.Count > 0)
             {
@@ -174,15 +174,27 @@ namespace TreeVisualizer
             else
             {
                 txtOutput.ForeColor = Color.DarkGreen;
-                txtOutput.Text = "Parsing succeeded";
+                txtOutput.Text += "Parsing succeeded" + '\r' + '\n'; ;
             }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            if (keyData == (Keys.Control | Keys.F5))
+            {
+                txtOutput.Clear();
+                CallParse();
+            }
+
             if (keyData == Keys.F5)
             {
                 CallParse();
+            }
+
+            if (keyData == (Keys.Control | Keys.F7))
+            {
+                txtOutput.Clear();
+                CallTokenize();
             }
 
             if (keyData == Keys.F7)
