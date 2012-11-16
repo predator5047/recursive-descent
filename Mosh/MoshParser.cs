@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Parser
+namespace Mosh
 {
-    public class SimpleParser
+    public class MoshParser
     {
         private Token m_startRuleToken;
         private readonly ILexer m_lexer;
@@ -17,7 +17,7 @@ namespace Parser
         private Func<string, Node<string>> m_rulePreHook;
         private Action<Node<string>>  m_rulePostHook;
 
-        public SimpleParser(ILexer lexer)
+        public MoshParser(ILexer lexer)
         {
             m_startRuleToken = new Token { TokenType = TokenType.NEW_RULE };
             m_tree = new Node<string>();
@@ -157,35 +157,9 @@ namespace Parser
 
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            if (!(
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
-                RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched() || 
-                RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
-                RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched()))
+            if (!(true))
             {
                 throw new ParserException("Parsing failed (Stmt)");
-            }
-
-            m_rulePostHook(tempNode);
-        }
-
-        public void Expr()
-        {
-            var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
-
-            if (!(
-                //RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.OPER).FollowedBy(TokenType.NAME).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.VALUE).FollowedBy(TokenType.RPAR).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.LPAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.RPAR).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.VALUE).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.EQ).FollowedBy(TokenType.NAME).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.OPER).FollowedBy(Expr).AndWasMatched() ||
-                RuleStartsWith(TokenType.VALUE).FollowedBy(TokenType.OPER).FollowedBy(Expr).AndWasMatched() ||
-                RuleStartsWith(TokenType.VALUE).AndWasMatched() ||
-                RuleStartsWith(TokenType.NAME).AndWasMatched()
-                ))
-            {
-                throw new ParserException("Parsing failed (Expr)");
             }
 
             m_rulePostHook(tempNode);
@@ -215,7 +189,7 @@ namespace Parser
             m_tree.Children.Clear();
         }
 
-        private SimpleParser RuleStartsWith(TokenType type)
+        private MoshParser RuleStartsWith(TokenType type)
         {
             m_consumed.Push(m_startRuleToken);
 
@@ -225,13 +199,13 @@ namespace Parser
             return this;
         }
 
-        private SimpleParser RuleStartsWith(Action grammar)
+        private MoshParser RuleStartsWith(Action grammar)
         {
             grammar();
             return this;
         }
 
-        private SimpleParser FollowedBy(TokenType type)
+        private MoshParser FollowedBy(TokenType type)
         {
             if (m_err.Count > 0 || m_triedRollback)
                 return this;
@@ -244,7 +218,7 @@ namespace Parser
             return this;
         }
 
-        private SimpleParser FollowedBy(Action grammar)
+        private MoshParser FollowedBy(Action grammar)
         {
             if (m_err.Count > 0 || m_triedRollback)
                 return this;

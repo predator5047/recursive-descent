@@ -1,0 +1,6 @@
+﻿program	:=	(class)*
+class	:=	CL_ACC_MOD VARNAME NEWLINE INDENT (member)* DEDENT
+member	:=	method
+		|	field
+method	:=	INNER_ACC_MOD VARNAME LPAR (params) RPAR NEWLINE INDENT (statement)* DEDENT
+field	:=	INNER_ACC_MOD VARNAME NEWLINE

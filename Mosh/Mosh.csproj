@@ -2,20 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{EBCA2391-DF7F-4EE0-84B6-F23647C1CACD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{559C54BA-C997-460F-89E7-CE867D00023A}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SimpleLanguage</RootNamespace>
-    <AssemblyName>SimpleLanguage</AssemblyName>
+    <RootNamespace>Mosh</RootNamespace>
+    <AssemblyName>Mosh</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,8 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,18 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="ErrorType.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="ILexer.cs" />
+    <Compile Include="MoshLexer.cs" />
+    <Compile Include="LexerExtensions.cs" />
+    <Compile Include="Node.cs" />
+    <Compile Include="PQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MoshParser.cs" />
+    <Compile Include="Token.cs" />
+    <Compile Include="TokenType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mosh\Mosh.csproj">
-      <Project>{559C54BA-C997-460F-89E7-CE867D00023A}</Project>
-      <Name>Mosh</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Parser\Parser.csproj">
-      <Project>{95848315-A00F-45FF-8BC6-CE9CDADCB8BD}</Project>
-      <Name>Parser</Name>
-    </ProjectReference>
+    <Content Include="grammar.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

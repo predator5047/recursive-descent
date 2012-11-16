@@ -28,6 +28,17 @@ namespace TreeVisualizer
 
         private void CustomComponentInitialization()
         {
+            var tabs = new List<int>();
+
+            const int maxTabLevel = 10;
+
+            for (int i = 1; i < maxTabLevel; i++)
+            {
+                tabs.Add(i*30);
+            }
+
+            txtInput.SelectionTabs = tabs.ToArray();
+
             GenerateTokens();
             UpdateTokenList();
             PopulateComboBox();
@@ -104,18 +115,24 @@ namespace TreeVisualizer
 
         private Node<string> CallParse()
         {
-            CallTokenize();
+            if (txtInput.Text.Length == 0)
+            {
+                AddTextLineToOutput("No input specified", Color.Red);
+                return null;
+            }
+
             var parser = new SimpleParser(lexer);
 
             try
             {
                 parser.Parse(txtInput.Text);
                 RenderTree(parser.SyntaxTree);
+                AddTextLineToOutput("Parsing succeeded", Color.DarkGreen);
                 return parser.SyntaxTree;
             }
             catch (ParserException ex)
             {
-                txtOutput.Text += ex.Message + '\r' + '\n';
+                AddTextLineToOutput(ex.Message, Color.Red);
                 return null;
             }
         }
@@ -133,14 +150,12 @@ namespace TreeVisualizer
                     Tokens.Add(token);
                 }
 
-                txtOutput.ForeColor = Color.DarkGreen;
-                txtOutput.Text += "Lexical analysis passed" + '\r' + '\n';
+                AddTextLineToOutput("Lexical analysis passed", Color.DarkGreen);
                 UpdateTokenList();
             }
             catch (LexerException exception)
             {
-                txtOutput.ForeColor = Color.DarkRed;
-                txtOutput.Text += exception.Message + '\r' + '\n';
+                AddTextLineToOutput(exception.Message, Color.Red);
             }
         }
 
@@ -162,25 +177,6 @@ namespace TreeVisualizer
                 {
                     AddNode(node, token);
                 }
-            }
-        }
-
-        private void SetOutput(Queue<Error> errors)
-        {
-            //txtOutput.Text = string.Empty;
-
-            if (errors.Count > 0)
-            {
-                txtOutput.ForeColor = Color.DarkRed;
-                foreach (var error in errors)
-                {
-                    txtOutput.Text += error.ToString() + '\r' + '\n';
-                }
-            }
-            else
-            {
-                txtOutput.ForeColor = Color.DarkGreen;
-                txtOutput.Text += "Parsing succeeded" + '\r' + '\n'; ;
             }
         }
 
@@ -226,10 +222,22 @@ namespace TreeVisualizer
             CallTokenize();
         }
 
-        private void txtInput_TextChanged(object sender, EventArgs e)
+        private void AddTextLineToOutput(string text)
+        {
+            AddTextLineToOutput(text, Color.Black);
+        }
+
+        private void AddTextLineToOutput(string text, Color c)
+        {
+            txtOutput.SelectionColor = c;
+            txtOutput.AppendText(text);
+            txtOutput.AppendText("\u2028");
+        }
+
+        /*private void txtInput_TextChanged(object sender, EventArgs e)
         {
 
-        }
+        }*/
 
         private void btnCompile_Click(object sender, EventArgs e)
         {
@@ -238,14 +246,25 @@ namespace TreeVisualizer
 
         private void CallCompile()
         {
-            txtOutput.Text += "Building..." +'\r' + '\n';
             var tree = CallParse();
 
             if (tree == null)
                 return;
 
+            AddTextLineToOutput("Building...", Color.YellowGreen);
+
             var compiler = new Compiler();
             compiler.Compile(tree);
+        }
+
+        private void txtInput_TextChanged_1(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void tokenList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

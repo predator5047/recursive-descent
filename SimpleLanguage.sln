@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeVisualizer", "TreeVisua
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleCompiler", "SimpleCompiler\SimpleCompiler.csproj", "{00BEE6C6-97FA-4436-8018-9726E7130391}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mosh", "Mosh\Mosh.csproj", "{559C54BA-C997-460F-89E7-CE867D00023A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,16 @@ Global
 		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{00BEE6C6-97FA-4436-8018-9726E7130391}.Release|x86.ActiveCfg = Release|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{559C54BA-C997-460F-89E7-CE867D00023A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

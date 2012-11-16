@@ -34,8 +34,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tokenList = new System.Windows.Forms.ListBox();
-            this.txtInput = new System.Windows.Forms.TextBox();
-            this.txtOutput = new System.Windows.Forms.TextBox();
+            this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,9 +57,10 @@
             this.btnAddToken = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.btnParse = new System.Windows.Forms.ToolStripButton();
+            this.btnCompile = new System.Windows.Forms.ToolStripButton();
             this.btnTokenize = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.btnCompile = new System.Windows.Forms.ToolStripButton();
+            this.txtInput = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -94,7 +94,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(987, 443);
-            this.splitContainer1.SplitterDistance = 315;
+            this.splitContainer1.SplitterDistance = 194;
             this.splitContainer1.TabIndex = 0;
             // 
             // syntaxTreeView
@@ -103,7 +103,7 @@
             this.syntaxTreeView.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.syntaxTreeView.Location = new System.Drawing.Point(0, 0);
             this.syntaxTreeView.Name = "syntaxTreeView";
-            this.syntaxTreeView.Size = new System.Drawing.Size(315, 443);
+            this.syntaxTreeView.Size = new System.Drawing.Size(194, 443);
             this.syntaxTreeView.TabIndex = 0;
             // 
             // splitContainer2
@@ -120,7 +120,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.txtOutput);
-            this.splitContainer2.Size = new System.Drawing.Size(668, 443);
+            this.splitContainer2.Size = new System.Drawing.Size(789, 443);
             this.splitContainer2.SplitterDistance = 307;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -137,8 +137,8 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.txtInput);
-            this.splitContainer3.Size = new System.Drawing.Size(668, 307);
-            this.splitContainer3.SplitterDistance = 222;
+            this.splitContainer3.Size = new System.Drawing.Size(789, 307);
+            this.splitContainer3.SplitterDistance = 115;
             this.splitContainer3.TabIndex = 0;
             // 
             // tokenList
@@ -147,35 +147,20 @@
             this.tokenList.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tokenList.FormattingEnabled = true;
             this.tokenList.Location = new System.Drawing.Point(0, 0);
-            this.tokenList.MultiColumn = true;
             this.tokenList.Name = "tokenList";
-            this.tokenList.Size = new System.Drawing.Size(222, 307);
+            this.tokenList.Size = new System.Drawing.Size(115, 307);
             this.tokenList.TabIndex = 1;
-            // 
-            // txtInput
-            // 
-            this.txtInput.AcceptsReturn = true;
-            this.txtInput.AcceptsTab = true;
-            this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtInput.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtInput.Location = new System.Drawing.Point(0, 0);
-            this.txtInput.Multiline = true;
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(442, 307);
-            this.txtInput.TabIndex = 0;
-            this.txtInput.TextChanged += new System.EventHandler(this.txtInput_TextChanged);
+            this.tokenList.SelectedIndexChanged += new System.EventHandler(this.tokenList_SelectedIndexChanged);
             // 
             // txtOutput
             // 
-            this.txtOutput.BackColor = System.Drawing.Color.White;
             this.txtOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtOutput.ForeColor = System.Drawing.Color.Maroon;
+            this.txtOutput.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOutput.Location = new System.Drawing.Point(0, 0);
-            this.txtOutput.Multiline = true;
             this.txtOutput.Name = "txtOutput";
-            this.txtOutput.ReadOnly = true;
-            this.txtOutput.Size = new System.Drawing.Size(668, 132);
+            this.txtOutput.Size = new System.Drawing.Size(789, 132);
             this.txtOutput.TabIndex = 0;
+            this.txtOutput.Text = "";
             // 
             // menuStrip1
             // 
@@ -249,11 +234,11 @@
             this.btnAddToken,
             this.toolStripSeparator3,
             this.btnParse,
-            this.btnTokenize,
-            this.btnCompile});
+            this.btnCompile,
+            this.btnTokenize});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(559, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(528, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // newToolStripButton
@@ -379,6 +364,16 @@
             this.btnParse.Text = "Parse token stream (F5)";
             this.btnParse.Click += new System.EventHandler(this.btnParse_Click);
             // 
+            // btnCompile
+            // 
+            this.btnCompile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCompile.Image = ((System.Drawing.Image)(resources.GetObject("btnCompile.Image")));
+            this.btnCompile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCompile.Name = "btnCompile";
+            this.btnCompile.Size = new System.Drawing.Size(23, 22);
+            this.btnCompile.Text = "Compile (F6)";
+            this.btnCompile.Click += new System.EventHandler(this.btnCompile_Click);
+            // 
             // btnTokenize
             // 
             this.btnTokenize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -398,15 +393,16 @@
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
-            // btnCompile
+            // txtInput
             // 
-            this.btnCompile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCompile.Image = ((System.Drawing.Image)(resources.GetObject("btnCompile.Image")));
-            this.btnCompile.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCompile.Name = "btnCompile";
-            this.btnCompile.Size = new System.Drawing.Size(23, 22);
-            this.btnCompile.Text = "Compile (F6)";
-            this.btnCompile.Click += new System.EventHandler(this.btnCompile_Click);
+            this.txtInput.AcceptsTab = true;
+            this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtInput.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInput.Location = new System.Drawing.Point(0, 0);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(670, 307);
+            this.txtInput.TabIndex = 0;
+            this.txtInput.Text = "";
             // 
             // Form1
             // 
@@ -426,12 +422,10 @@
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
-            this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
-            this.splitContainer3.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
             this.splitContainer3.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
@@ -453,7 +447,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TreeView syntaxTreeView;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.ListBox tokenList;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -479,9 +472,10 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton btnParse;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TextBox txtInput;
         private System.Windows.Forms.ToolStripButton btnTokenize;
         private System.Windows.Forms.ToolStripButton btnCompile;
+        private System.Windows.Forms.RichTextBox txtOutput;
+        private System.Windows.Forms.RichTextBox txtInput;
     }
 }
 
