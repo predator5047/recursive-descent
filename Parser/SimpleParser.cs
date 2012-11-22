@@ -16,6 +16,7 @@ namespace Parser
 
         private Func<string, Node<string>> m_rulePreHook;
         private Action<Node<string>>  m_rulePostHook;
+        private bool m_unmatchedFlag = false;
 
         public SimpleParser(ILexer lexer)
         {
@@ -69,7 +70,7 @@ namespace Parser
             }
             catch (LexerException ex)
             {
-                throw new ParserException("Parsing failed", ex);
+                throw new ParserException("Parsing failed (Lexer)", ex);
             }
 
             // Stmt == Terminating rule
@@ -78,7 +79,9 @@ namespace Parser
 
             // If we still have symbols in the stream, parsing failed
             if (m_sym.Count > 0)
-                m_err.Enqueue(new Error { Message = "Syntax Error - Unmatched tokens", Type = ErrorType.SyntaxError });
+                throw new ParserException("Parsing failed (Unmatched tokens in stream)");
+
+                //m_err.Enqueue(new Error { Message = "Syntax Error - Unmatched tokens", Type = ErrorType.SyntaxError });
 
             // If parsing failed, reset the tree
             if (m_err.Count > 0)
@@ -138,13 +141,9 @@ namespace Parser
         {
             var tempNode = m_rulePreHook(MethodBase.GetCurrentMethod().Name);
 
-            /*while (RuleStartsWith(Stmt).AndWasMatched())
+            if (!OneOrMore(Stmt).AndWasMatched())
             {
-            }*/
-
-            while (m_sym.Count > 0 && m_err.Count == 0)
-            {
-                Stmt();
+                throw new ParserException("Parsing failed (Prg)");
             }
 
             m_rulePostHook(tempNode);
@@ -159,11 +158,12 @@ namespace Parser
 
             if (!(
                 RuleStartsWith(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
-                RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).FollowedBy(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched() || 
+                RuleStartsWith(TokenType.IF).FollowedBy(TokenType.LPAR).FollowedBy(Expr).FollowedBy(TokenType.RPAR).FollowedBy(TokenType.LBRA).OneOrMore(Stmt).FollowedBy(TokenType.RBRA).AndWasMatched() || 
                 RuleStartsWith(TokenType.VAR).FollowedBy(TokenType.NAME).FollowedBy(TokenType.ASSIGN).FollowedBy(Expr).FollowedBy(TokenType.SEMI).AndWasMatched() ||
                 RuleStartsWith(Expr).FollowedBy(TokenType.SEMI).AndWasMatched()))
             {
-                throw new ParserException("Parsing failed (Stmt)");
+                m_unmatchedFlag = true;
+                //throw new ParserException("Parsing failed (Stmt)");
             }
 
             m_rulePostHook(tempNode);
@@ -185,15 +185,23 @@ namespace Parser
                 RuleStartsWith(TokenType.NAME).AndWasMatched()
                 ))
             {
-                throw new ParserException("Parsing failed (Expr)");
+                m_unmatchedFlag = true;
+                //throw new ParserException("Parsing failed (Expr)");
             }
 
             m_rulePostHook(tempNode);
         }
 
+        private bool AndHadMore()
+        {
+            var status = !m_unmatchedFlag;
+            m_unmatchedFlag = false;
+            return status;
+        }
+
         private bool AndWasMatched()
         {
-            var status = (m_err.Count == 0 && !m_triedRollback);
+            var status = (!m_triedRollback);
             m_triedRollback = false;
             return status;
         }
@@ -215,6 +223,19 @@ namespace Parser
             m_tree.Children.Clear();
         }
 
+        private SimpleParser OneOrMore(Action grammar)
+        {
+            if (m_triedRollback)
+                return this;
+
+            while (m_sym.Count > 0 && FollowedBy(grammar).AndHadMore()) {}
+
+            //if (!ConsumeNext(type))
+            //    TryRollBack();
+
+            return this;
+        }
+
         private SimpleParser RuleStartsWith(TokenType type)
         {
             m_consumed.Push(m_startRuleToken);
@@ -227,26 +248,29 @@ namespace Parser
 
         private SimpleParser RuleStartsWith(Action grammar)
         {
+            m_consumed.Push(m_startRuleToken);
+
+            if (m_triedRollback)
+                return this;
+
             grammar();
             return this;
         }
 
         private SimpleParser FollowedBy(TokenType type)
         {
-            if (m_err.Count > 0 || m_triedRollback)
+            if (m_triedRollback)
                 return this;
 
             if (!ConsumeNext(type))
                 TryRollBack();
 
-                //m_err.Enqueue(new Error {Message = "Unexpected symbol.", Type = ErrorType.UnexpectedSymbol});
-
-            return this;
+             return this;
         }
 
         private SimpleParser FollowedBy(Action grammar)
         {
-            if (m_err.Count > 0 || m_triedRollback)
+            if (m_triedRollback)
                 return this;
 
             grammar();
