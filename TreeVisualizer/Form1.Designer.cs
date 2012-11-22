@@ -34,6 +34,7 @@
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.tokenList = new System.Windows.Forms.ListBox();
+            this.txtInput = new System.Windows.Forms.RichTextBox();
             this.txtOutput = new System.Windows.Forms.RichTextBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,7 +61,6 @@
             this.btnCompile = new System.Windows.Forms.ToolStripButton();
             this.btnTokenize = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.txtInput = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -151,6 +151,17 @@
             this.tokenList.Size = new System.Drawing.Size(115, 307);
             this.tokenList.TabIndex = 1;
             this.tokenList.SelectedIndexChanged += new System.EventHandler(this.tokenList_SelectedIndexChanged);
+            // 
+            // txtInput
+            // 
+            this.txtInput.AcceptsTab = true;
+            this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtInput.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtInput.Location = new System.Drawing.Point(0, 0);
+            this.txtInput.Name = "txtInput";
+            this.txtInput.Size = new System.Drawing.Size(670, 307);
+            this.txtInput.TabIndex = 0;
+            this.txtInput.Text = "";
             // 
             // txtOutput
             // 
@@ -392,17 +403,6 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // txtInput
-            // 
-            this.txtInput.AcceptsTab = true;
-            this.txtInput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtInput.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtInput.Location = new System.Drawing.Point(0, 0);
-            this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(670, 307);
-            this.txtInput.TabIndex = 0;
-            this.txtInput.Text = "";
             // 
             // Form1
             // 

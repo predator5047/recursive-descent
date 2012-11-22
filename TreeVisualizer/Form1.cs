@@ -162,9 +162,9 @@ namespace TreeVisualizer
         private void RenderTree(Node<string> tree)
         {
             syntaxTreeView.Nodes.Clear();
-
-            //AddNode(syntaxTreeView.Nodes.Add("BASE"), tree);
             AddNode(syntaxTreeView.Nodes.Add("Parse tree"), tree);
+
+            syntaxTreeView.ExpandAll();
         }
 
         private void AddNode(TreeNode fromView, Node<string> n)
